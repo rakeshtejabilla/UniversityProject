@@ -2,6 +2,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 const db = require('./database');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,6 +11,112 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Configure the Nodemailer transporter (using Gmail for this example)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',  // You can use any other mail service provider
+    // auth: {
+    //     user: 'your-email@gmail.com',  // Use your Gmail account or any email provider
+    //     pass: 'your-app-password'   // Use an app password or regular password
+    // }
+    auth: {
+        user: 'karampurisaivineeth2001@gmail.com',  // Use your Gmail account or any email provider
+        pass: 'dmzi zoou blpv sbnv'   // Use an app password or regular password
+    }
+});
+
+// Mock OTP storage (in a real app, use a proper storage mechanism)
+let otpStorage = {};
+
+const sendOtpEmail = (email, otp, callback) => {
+    const mailOptions = {
+        from: 'karampurisaivineeth2001@gmail.com',
+        to: email,
+        subject: 'Your OTP for Password Reset',
+        text: `Your OTP for resetting your password for KUCE&T University Application is: ${otp}`
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+            return callback(err); // Callback with error
+        } else {
+            return callback(null); // Callback with no error
+        }
+    });
+};
+
+app.post('/check-email', (req, res) => {
+    const { forgotPasswordEmail } = req.body;
+
+    // Check if the email exists in the database
+    const sql = `SELECT * FROM users WHERE email = ?`;
+    db.get(sql, [forgotPasswordEmail], (err, user) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Database error' });
+        }
+        if (user) {
+            // Generate and send OTP (mocked)
+            const otp = crypto.randomInt(100000, 999999).toString();
+            otpStorage[forgotPasswordEmail] = otp; // Store OTP temporarily
+
+            // Send OTP to the user's email
+            sendOtpEmail(forgotPasswordEmail, otp, (emailError) => {
+            if (emailError) {
+                return res.json({ success: false, message: 'Failed to send OTP. Please try again.' });
+            }
+            // Success response
+            res.json({ success: true, message: 'OTP has been sent to your email.' });
+        });
+        } else {
+            res.json({ success: false, message: 'Email not found' });
+        }
+    });
+});
+
+
+
+app.post('/verify-otp', (req, res) => {
+    const { otp, forgotPasswordEmail } = req.body;
+
+    // Verify the OTP for the given email
+    if (otpStorage[forgotPasswordEmail] === otp) {
+        delete otpStorage[forgotPasswordEmail]; // Delete OTP after verification
+        res.json({ success: true });
+    } else {
+        res.json({ success: false, message: 'Invalid OTP' });
+    }
+});
+
+
+app.post('/reset-password', (req, res) => {
+    const { newPassword, forgotPasswordEmail } = req.body;
+
+    const sql = `UPDATE users SET password = ? WHERE email = ?`;
+    db.run(sql, [newPassword, forgotPasswordEmail], function (err) {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Error updating password' });
+        }
+
+        res.json({ success: true, message: 'Password reset successfully' });
+    });
+});
+
+// Resend OTP endpoint
+app.post('/resend-otp', (req, res) => {
+    const { forgotPasswordEmail } = req.body;
+    // Generate a new OTP
+    const otp = crypto.randomInt(100000, 999999).toString();
+    // Store the OTP in memory (or a more persistent storage like a database if necessary)
+    otpStorage[forgotPasswordEmail] = otp;
+    // Send OTP to the user's email
+    sendOtpEmail(forgotPasswordEmail, otp, (emailError) => {
+        if (emailError) {
+            return res.json({ success: false, message: 'Failed to send OTP. Please try again.' });
+        }
+        // Success response
+        res.json({ success: true, message: 'OTP has been sent to your email.' });
+    });
+});
 
 // Registration route
 app.post('/register', (req, res) => {
