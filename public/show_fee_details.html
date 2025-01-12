@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Course Student Fee Details</title>
+    <style>
+        .box {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 16px;
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.sidebar {
+    width: 25%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+}
+
+.sidebar h2 {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.main-content {
+    width: 75%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-content button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.main-content button:hover {
+    background-color: #0056b3;
+}
+
+form {
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+#course-fee-details,
+#utr-fee-details,
+#date-fee-details {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+    </style>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td width="4%" height="50" align="left" valign="top"><img
+                        src="https://www.careerindia.com/img/2013/02/27-kakatiyauniversity.jpg" width="151"
+                        height="110"></td>
+                <td>
+                    <center>
+                        <p class="h1">Kakatiya University</p>
+                        <p class="h2">Fee details</p>
+                        <p class="h3">Warangal-506009, Telangana, India</p>
+                    </center>
+                </td>
+                <td width="2%" align="right" valign="top"><img src="https://kakatiya.ac.in/images/NAAC_2017.png"
+                        width="200" height="90"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="topnav">
+        <div class="topnav-right">
+            <a href="index.html">HOME</a>
+            <a href="https://www.kakatiya.ac.in/">UNIVERSITY</a>
+            <button onclick="logout()">Log Out</button>
+        </div>
+    </div>
+
+    <div class="box">
+
+        <h1>Show Course Student Fee Details</h1>
+        <h2>Fetch by Course</h2>
+        <form id="course-fee-details-form">
+            <label for="course_type">Course Type:</label>
+            <select id="course_type" name="course_type" required>
+                <option value="UG">UG</option>
+                <option value="PG">PG</option>
+                <option value="Prof">Prof</option>
+                <option value="Non-Prof">Non-Prof</option>
+            </select>
+
+
+            <label for="course_name">Course Name:</label>
+            <select id="course_name" disabled name="course_type" required>
+            </select>
+            <button type="submit">Get Details</button>
+        </form>
+
+        <div id="course-fee-details"></div>
+
+        <button onclick="printDetails()">Print Details</button>
+
+        <h2>Fetch by UTR No</h2>
+        <form id="utr-fee-details-form">
+            <label for="utr_no">UTR No:</label>
+            <input type="text" id="utr_no" name="utr_no" required>
+
+            <button type="submit">Get Details</button>
+        </form>
+
+        <div id="utr-fee-details"></div>
+
+        <button onclick="printutr()">Print Details</button>
+
+        <form id="date-fee-details-form">
+            <label for="from_date">From Date:</label>
+            <input type="date" id="from_date" name="from_date" required>
+          
+            <label for="to_date">To Date:</label>
+            <input type="date" id="to_date" name="to_date" required>
+          
+            <button type="submit">Fetch Details</button>
+          </form>
+          
+          <div id="date-fee-details"></div>
+
+          <button onclick="printByDate()" >Print Details</button>
+
+
+    </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

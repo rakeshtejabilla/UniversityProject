@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student Fee Details</title>
+    <style>/* style.css */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        
+        h1, h2 {
+            text-align: center;
+        }
+        
+        .fee-details, .actions, form {
+            margin: 20px 0;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        </style>
+        
+        <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+                <td width="4%" height="50" align="left" valign="top"><img src="https://www.careerindia.com/img/2013/02/27-kakatiyauniversity.jpg" width="151" height="110"></td>
+                <td>
+        <center>
+            <p class="h1">Kakatiya University</p>
+            <p class="h2">Fee details</p>
+            <p class="h3">Warangal-506009, Telangana, India</p>
+        </center>
+        </td>
+        <td width="2%" align="right" valign="top"><img src="https://kakatiya.ac.in/images/NAAC_2017.png" width="200" height="90"></td>
+        </tr></tbody>
+    </table> 
+    <div class="topnav">
+        <div class="topnav-right">
+            <a href="index.html">HOME</a>
+            <a href="https://www.kakatiya.ac.in/">UNIVERSITY</a>
+            <button onclick="logout()">Log Out</button>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Add Student Fee Details</h1>
+        <form id="submission-form">
+            <!-- Form fields as defined previously -->
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="father_name">Father's Name:</label>
+            <input type="text" id="father_name" name="father_name" required>
+            
+            <label for="course_type">Course Type:</label>
+            <select id="course_type" name="course_type" required>
+                <option value="">select</option>
+                <option value="UG">UG</option>
+                <option value="PG">PG</option>
+                <option value="Prof">Prof</option>
+                <option value="Non-Prof">Non-Prof</option>
+            </select>
+            
+            <label for="course_name">Course Name:</label>
+            <select id="course_name" disabled name="course_type" required>
+            </select>            
+            <label for="ht_no">H.T. No:</label>
+            <input type="text" id="ht_no" name="ht_no" required>
+            
+            <label for="year">Year:</label>
+            <select id="year" name="year" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            
+            <label for="semester">Semester:</label>
+            <select id="semester" name="semester" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            
+            <label for="bank_name">Bank Name:</label>
+            <input type="text" id="bank_name" name="bank_name" required>
+            
+            <label for="utr_no">UTR No:</label>
+            <input type="text" id="utr_no" name="utr_no" required>
+            
+            <label for="fee_amount">Fee Amount:</label>
+            <input type="number" id="fee_amount" name="fee_amount" required>
+            
+            <label for="payment_date">Payment Date:</label>
+            <input type="date" id="payment_date" name="payment_date" required>
+            
+            <label for="purpose">Purpose of Payment:</label>
+            <select id="purpose" name="purpose" required onchange="showOtherPurpose()">
+                <option value="Readmissions">Readmissions</option>
+                <option value="Transfer Admission">Transfer Admission</option>
+                <option value="Transfer Cum Readmission">Transfer Cum Readmission</option>
+                <option value="Extension/Time bar permissions (Research Scholars)">Extension/Time bar permissions (Research Scholars)</option>
+                <option value="Time bar permissions">Time bar permissions</option>
+                <option value="Syllabus Attestation">Syllabus Attestation</option>
+                <option value="Processing fee for Management Quota Admissions approvals/verification">Processing fee for Management Quota Admissions approvals/verification</option>
+                <option value="Recognition of degrees by other universities fee/Equivalency Certificate">Recognition of degrees by other universities fee/Equivalency Certificate</option>
+                <option value="Certification">Certification</option>
+                <option value="Ph.D. degrees recognition as per UGC regulations fee">Ph.D. degrees recognition as per UGC regulations fee</option>
+                <option value="Other">Other</option> <!-- Added Other option -->
+            </select>
+
+            <!-- Hidden text field for Other Purpose -->
+            <div id="other-purpose-container" style="display:none;">
+                <label for="other_purpose">Please specify other purpose:</label>
+                <input type="text" id="other_purpose" name="other_purpose">
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

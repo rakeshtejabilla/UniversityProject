@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express-session": "^1.18.0",
+    "express.js": "^1.0.0",
+    "sqlite3": "^5.1.7"
+  }
+}
